@@ -44,12 +44,45 @@ fun attaque(defenderHp: Int, weaponDmg: Int, defTotal: Int, attackerName: String
 
 fun boirePotion(targetName: String, targetHp: Int, targetMaxHp: Int, potionStrength: Int) {
     var exHP = targetHp
+    var hp = targetHp + potionStrength
 
-    if (targetHp + potionStrength > targetMaxHp) {
-        exHP = targetMaxHp - exHP
+    if (hp > targetMaxHp)
+        hp = targetMaxHp
+
+    val newHP = hp - exHP
+
+    return println("$targetName boit une potion et récupère $newHP PV.")
+}
+
+fun bouleDeFeu(casterName: String, targetName: String, casterAtk: Int, targetDefTotal: Int, targetHp: Int) {
+    var hp = targetHp
+    var spellDmg = lanceDes(casterAtk/3, 6)
+
+    if (spellDmg < 0) spellDmg = 0
+
+    spellDmg - targetDefTotal
+
+    if (spellDmg > hp) hp = 0
+    else hp -= spellDmg
+
+    println("$casterName lance une boule de feu et inflige $spellDmg point(s) de dégâts à $targetName, $targetName a $hp PV restant.")
+}
+
+fun missileMagique(casterName: String, targetName: String, casterAtk: Int, targetDefTotal: Int, targetHp: Int) {
+    var missileDmg = 0
+    val nbMissile = casterAtk / 2
+    var targetHp = targetHp
+
+    for (i in 0..nbMissile) {
+        if (targetHp <= 0) {
+            println("Les PV de $targetName sont tombés à 0.")
+            break
+        }
+        missileDmg = lanceDes(1, 6) - targetDefTotal
+        targetHp -= missileDmg
+        println("$casterName lance un missile magique et inflige $missileDmg point(s) de dégâts à $targetName.")
+        println("$targetName a $targetHp PV restant.")
     }
-
-    return println("$targetName boit une potion et récupère $potionStrength PV.")
 }
 
 fun main() {
@@ -71,5 +104,11 @@ fun main() {
     //println(attaque(5, 9, 2, "Evan", "pnjRandomN°5"))
 
     //Exo 5
-    //pas fini, fonctionne pas encore bien
+    //println(boirePotion("Evan", 8, 20, 6))
+
+    //Exo 6
+    //println(bouleDeFeu("Evan", "pnjRandomN°99", 5, 3, 10))
+
+    //Exo 7 (ne fonctionne pas)
+    //println(missileMagique("Evan", "pnjRandomN°12", 12, 5, 20))
 }
